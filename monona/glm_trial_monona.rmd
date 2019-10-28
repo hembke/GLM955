@@ -1,0 +1,57 @@
+---
+title: "GLM_Monona"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+#knitr::opts_chunk$set(echo = F)
+rm(list=ls()); cat("\014")
+```
+
+```{r}
+library(dplyr); library(magrittr);library(lubridate); library(tidyr)
+library(ggplot2)
+library(glmtools)
+library(GLM3r)
+```
+
+```{r}
+#My field file has duplicate depths at certain dates as well as missing values so I need to fix up the dataset
+getwd()
+sim_folder <- getwd()
+
+field_Monona <- read.csv("field_Monona2.csv") 
+
+#%>%
+  #distinct(DateTime,Depth, .keep_all=TRUE)
+
+#write.csv(field_Monona, "field_Monona2.csv")
+
+```
+
+```{r}
+#Running the model from examples in Canvas
+
+run_glm()
+
+out_file <- file.path(sim_folder, 'outputs/output.nc')
+plot_var(nc_file = out_file, var_name = 'temp')
+
+plot_var_compare(nc_file = out_file, field_file = 'field_Monona2.csv',var_name = 'temp')
+
+temp_rmse <- compare_to_field(out_file, field_file ="field_Monona2.csv", 
+                          metric = 'water.temperature', as_value = FALSE)
+print(paste(round(temp_rmse,2),'deg C RMSE'))
+
+# base value: wind_factor=1.0, kw (Light extinction)= 0.22, Lw_factor=0.91
+# base values -- RMSE = 2.11
+# change values: wind_factor=0.9 -- RMSE = 1.85
+# change values: wind_factor= 0.8 -- RMSE = 1.82
+# change values: wind_factor = 0.5 -- RMSE = 2.65
+# change values: kw = 0.71 -- RMSE = 2.02
+# change values: wind_factor=0.9, kw = 0.71 -- RMSE = 2.26
+# change values: lw_factor = 0.82, RMSE = 2.67
+# chanage valuesL kw = 0.28, lw_factor = 1.001 -- RMSE = 1.69
+```
