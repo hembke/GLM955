@@ -18,7 +18,7 @@
 !
 !-------------------------------------------------------------------------------
 &glm_setup
-   sim_name = 'Mendota'
+   sim_name = 'Monona'
    max_layers = 500
    min_layer_vol = 0.1
    min_layer_thick = 0.15 
@@ -97,16 +97,16 @@
 !
 !-------------------------------------------------------------------------------
 &morphometry
-   lake_name  = 'Mendota'
-   latitude   =  43.00
-   longitude  = -89.41
+   lake_name  = 'Monona'
+   latitude   =  43.07
+   longitude  = -89.36
    !crest_elev = 400
-   bsn_len    = 9500
-   bsn_wid    = 7400
-   bsn_vals   = 15
+   bsn_len    = 6600
+   bsn_wid    = 3900
+   bsn_vals   = 22
    !   H(m)  A(m2)
-   H = 375.00640,376.79166,378.57691,380.36217,382.14743,383.93269, 385.71794,387.50320,389.28846,391.07371,392.85897,394.64423, 396.42949,398.21474,400.00000
-   A = 0.00000,2827226.39,5654452.79,8481679.18,11308905.58,14136131.97, 16963358.37,19790584.76,22617811.16,25445037.55,28272263.95,31099490.34, 33926716.74,36753943.13,39581169.52
+   H = 237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258
+   A = 24000, 43000, 120000, 263000, 472000, 767000, 1450000, 2230000, 3080000, 3900000, 4960000, 6000000, 6910000, 7220000, 7790000, 8370000, 8740000, 9420000, 10300000, 10700000, 12400000, 13700000
 /
 !-------------------------------------------------------------------------------
 ! duration of run
@@ -138,7 +138,7 @@
 &time
    timefmt = 2
    start = '1980-01-01 00:00:00'
-   stop = '2016-12-31 00:00:00'
+   stop = '2016-12-31 23:00:00'
    dt = 3600
    num_days= 730
    timezone = -6
@@ -176,12 +176,12 @@
 ! initial condition profiles
 !-------------------------------------------------------------------------------
 &init_profiles
-    lake_depth = 25
+    lake_depth = 21
     num_depths = 6
     the_depths = 0.0, 4.0, 8.0, 12.0, 16.0, 20.0
     the_temps  = 5.1, 5.0, 4.9, 4.9, 4.8, 4.8
     the_sals   = 0.00, 0.00, 0.00, 0.00, 0.00, 0.00
-   
+    
 /
 !-------------------------------------------------------------------------------
 ! meteorology
@@ -208,9 +208,9 @@
 
    subdaily   = .true. 
    meteo_fl   = 'Mendota_hourly_NLDAS2.csv'
-   wind_factor = 0.9
+   wind_factor = 1.0
    sw_factor = 0.91 
-   lw_factor = 0.91 
+   lw_factor = 1.001
    !at_factor = 1 
    !rh_factor = 1 
    !rain_factor = 1
@@ -225,7 +225,7 @@
    light_extc = 1.0, 0.5, 2.0, 4.0
    energy_frac = 0.51, 0.45, 0.035, 0.005
    Benthic_Imin = 10
-   Kw = 0.22 
+   Kw = 0.2832
 /
 
 !-------------------------------------------------------------------------------
@@ -268,7 +268,7 @@
    strmbd_slope   = 3.0,3.0,3.0,3.0
    strmbd_drag    = 0.0160,0.0160,0.0160,0.0160
    inflow_factor  = 1.0,1.0,1.0,1.0
-   inflow_fl      = 'Inputs/Mendota_yahara.csv','Inputs/Mendota_dorn.csv','Inputs/Mendota_sixmile.csv','Inputs/Mendota_pheasant.csv'
+   inflow_fl      = 'Inputs/Monona_yahara.csv','Inputs/Monona_dorn.csv','Inputs/Monona_sixmile.csv','Inputs/Monona_pheasant.csv'
    inflow_varnum  = 11,
    inflow_vars    = 'FLOW','SALT','TEMP','OGM_poc','OGM_docr','PHS_frp','NIT_amm','NIT_nit','OGM_don','CAR_dic','CAR_pH'     
    coef_inf_entrain = 0.
@@ -292,7 +292,7 @@
    outl_elvs    = 399.5
    bsn_len_outl = 799
    bsn_wid_outl = 398
-   outflow_fl   = 'Inputs/Mendota_outflow.csv'
+   outflow_fl   = 'Inputs/Monona_outflow.csv'
    outflow_factor = 1.0
 
 /
