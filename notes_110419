@@ -1,0 +1,18 @@
+a. Figure out contribution of all inflows - multiply yahara accordingly 
+- Mendota inflows: 
+    - yahara - 100 cfs —> 30%
+    - Token - 
+    - Sixmile - 50 cfs —> 15%
+    - Dorn - 30 cfs —> 9% 
+    - Pheasant branch - 
+- Monona inflows: 
+    - yahara
+    - Wingra - minimal
+    - Starkweather - minimal
+
+1. Scale Mendota inflow data (2x yahara)
+2. Making up salinity data for both lakes
+3. Run glm with inflow data and see how salinity contour looks like 
+4. Develop function to increase salinity - see how affects contour plots
+    1. For each model run, pull out bottom water temp: get_var(output_netcdf, 'temp', reference='surface')
+5. Determine if the salinities affect the onset and offset of stratification… 
