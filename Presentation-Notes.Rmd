@@ -1,0 +1,19 @@
+---
+title: "Presentation Notes"
+author: "Patricia Tran"
+date: "11/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+
+## Methods
+
+## Results
+
+## Discussion
