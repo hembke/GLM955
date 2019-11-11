@@ -1,0 +1,6 @@
+Add total inflow per year divided by residence time per year = volume of the lake
+Do the same thing to Monona and Mendota
+Run the r file with inflow
+Start Windsor in 1990
+Play around with the stream angles (line 269) (after you are done, test 10 to 80 and see how it changes the values)
+Choose metrics that are relevant to the question. Mixing, Stability --> Stratification, Dates, Schmidt stability to change. 
