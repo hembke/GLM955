@@ -1,0 +1,20 @@
+Salt scenarios :  Make increasing salt concentration
+We were able to run the model with inflow yay! 
+
+Our scenarios:
+-- Increase the amount over the year then see how much it is per day ---
+
+
+1) Each each increase the salinity input by X percent
+2) Make the salt concentration go exponentially over time
+3) Making salt go up exponentially then decrease over time --> Remediation
+4) Think about the season and when the salt goes in.
+
+If we really have time:
+Sensitivity of the inflows --> how does that change the RMSE
+
+What we need to learn how to do:
+- Export the contour plot data for temperature and salinity --> calculate the thermocline using rLakeAnalyzer
+
+What we are wondering about
+- If we don't use any inflow temp data and just inflow salt --> we will not use and note that as a caveat in the presentation

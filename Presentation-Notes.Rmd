@@ -16,9 +16,15 @@ knitr::opts_chunk$set(echo = TRUE)
 ####
 
 
+### Research Question
+
+
 ## Methods
 
 
 ## Results
 
 ## Discussion
+
+## Issues:
+1) The CSV file for the input has too have the column name "time", even if it's technically a Date Time.
