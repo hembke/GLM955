@@ -13,9 +13,14 @@ library(glmtools)
 library(GLM3r)
 library(tidyverse)
 library(lubridate)
+library(rLakeAnalyzer)
 
-setwd("~/Desktop/GLM ZOO955/mendota/MJS")
+setwd("~/Desktop/GLM955-South/mendota/MJS")
 sim_folder = getwd()
+
+windsor<-read_csv("Yahara_Windsor_ScaledDischarge_MJS.csv")
+windsor$SALT<-0.0001
+write_csv(windsor,"Yahara_Windsor_ScaledDischarge_MJS.csv")
 
 run_glm()
 
