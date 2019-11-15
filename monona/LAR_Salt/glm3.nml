@@ -264,10 +264,10 @@
 &inflow
    num_inflows    = 1 
    names_of_strms = 'Yahara_MainSt'
-   strm_hf_angle  = 65.0,65.0,65.0,65.0
-   strmbd_slope   = 3.0,3.0,3.0,3.0
-   strmbd_drag    = 0.0160,0.0160,0.0160,0.0160
-   inflow_factor  = 1.0,1.0,1.0,1.0
+   strm_hf_angle  = 65.0
+   strmbd_slope   = 3.0
+   strmbd_drag    = 0.0160
+   inflow_factor  = 1.0
    inflow_fl      = 'Yahara_MainSt.csv'
    inflow_varnum  = 2
    inflow_vars    = 'FLOW','SALT'    
