@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Introduction
 
 ####Salt entering a lake is the main cause of density differences between the epilimnion and hyoplimnion. An increase in this difference causes a greater inhibitor of mixing. (Judd 1970).
+
 #### When a lake fails to mix, especially a eutrophic lake,it can become redox stratified. Redox stratification can lead to persistant anoxia which can lead to a multitude of problems like production and accumulation of things like nitrate, phosphate, and sulfate. (Wyman and Kortesky 2018).
 ####
 

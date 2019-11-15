@@ -14,7 +14,7 @@ library(GLM3r)
 library(tidyverse)
 library(lubridate)
 
-setwd("~/Desktop/GLM ZOO955/mendota/MJS")
+setwd("~/Documents/GLM955-South/mendota/MJS/")
 sim_folder = getwd()
 
 run_glm()
