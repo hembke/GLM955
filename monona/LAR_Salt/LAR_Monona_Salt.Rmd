@@ -1,0 +1,35 @@
+---
+title: "LAR_Monona_Salt"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(lubridate)
+library(tidyr)
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(devtools)
+library(glmtools)
+library(GLM3r)
+```
+
+
+```{r}
+getwd()
+setwd("C:/Users/linne/OneDrive/Documents/GLM955-South/monona")
+sim_folder = getwd()
+
+run_glm()
+
+out_file = file.path(sim_folder, 'outputs/output.nc')
+plot_var(nc_file = out_file, var_name='salt')
+
+plot_var_compare(nc_file = out_file, field_file = 'field_Monona2.csv', var_name = 'temp')
+
+temp_rmse = compare_to_field(out_file, field_file = 'field_Monona2.csv', metric='water.temperature', as_value=F)
+print(paste(round(temp_rmse,2),'deg C RMSE')) #2.68 RMSE???
+
+
+```

@@ -97,7 +97,7 @@
 !
 !-------------------------------------------------------------------------------
 &morphometry
-   lake_name  = 'Monona'
+    lake_name  = 'Monona'
    latitude   =  43.07
    longitude  = -89.36
    !crest_elev = 400
@@ -138,7 +138,7 @@
 &time
    timefmt = 2
    start = '1980-01-01 00:00:00'
-   stop = '2016-12-31 23:00:00'
+   stop = '2016-12-31 00:00:00'
    dt = 3600
    num_days= 730
    timezone = -6
@@ -225,7 +225,7 @@
    light_extc = 1.0, 0.5, 2.0, 4.0
    energy_frac = 0.51, 0.45, 0.035, 0.005
    Benthic_Imin = 10
-   Kw = 0.2832
+   Kw = 0.2832 
 /
 
 !-------------------------------------------------------------------------------
@@ -268,7 +268,7 @@
    strmbd_slope   = 3.0,3.0,3.0,3.0
    strmbd_drag    = 0.0160,0.0160,0.0160,0.0160
    inflow_factor  = 1.0,1.0,1.0,1.0
-   inflow_fl      = 'Inputs/Monona_yahara.csv','Inputs/Monona_dorn.csv','Inputs/Monona_sixmile.csv','Inputs/Monona_pheasant.csv'
+   inflow_fl      = 'Inputs/Mendota_yahara.csv','Inputs/Mendota_dorn.csv','Inputs/Mendota_sixmile.csv','Inputs/Mendota_pheasant.csv'
    inflow_varnum  = 11,
    inflow_vars    = 'FLOW','SALT','TEMP','OGM_poc','OGM_docr','PHS_frp','NIT_amm','NIT_nit','OGM_don','CAR_dic','CAR_pH'     
    coef_inf_entrain = 0.
@@ -292,7 +292,7 @@
    outl_elvs    = 399.5
    bsn_len_outl = 799
    bsn_wid_outl = 398
-   outflow_fl   = 'Inputs/Monona_outflow.csv'
+   outflow_fl   = 'Inputs/Mendota_outflow.csv'
    outflow_factor = 1.0
 
 /
