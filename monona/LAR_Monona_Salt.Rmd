@@ -13,7 +13,10 @@ library(ggplot2)
 library(devtools)
 library(glmtools)
 library(GLM3r)
+
+
 ```
+
 
 
 ```{r}
@@ -24,7 +27,7 @@ sim_folder = getwd()
 run_glm()
 
 out_file = file.path(sim_folder, 'outputs/output.nc')
-plot_var(nc_file = out_file, var_name='temp')
+plot_var(nc_file = out_file, var_name='salt')
 
 plot_var_compare(nc_file = out_file, field_file = 'field_Monona2.csv', var_name = 'temp')
 
