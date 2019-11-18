@@ -3,7 +3,7 @@ We were able to run the model with inflow yay!
 
 Let's get our data in order first!
 1) double check residence time against inflows (Linnea)
-2)add temp data to mendota inflow (Hilary)
+2) add temp data to mendota inflow (Hilary)
 3)use outflow file for mendota model as input for inflow of monona (should be in lake.csv or output.nc) (TBD)
 4) make sure chloride is translated to salinity (.61) in your own personal files. Our baseline values are 19.5mg/L for Mendota inflow, 12.2 mg/L for in-lake Mendota starting, 15.3 mg/L for in-lake Monona starting
 
