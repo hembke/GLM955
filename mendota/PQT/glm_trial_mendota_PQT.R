@@ -19,13 +19,13 @@ run_glm()
 
 out_file = file.path(sim_folder, 'outputs/output.nc')
 
-pdf("Simulations/2019-11-18-Salt-19mgl", width=11, height=8.5) 
+pdf("Simulations/2019-11-18-Salt-214mgl", width=11, height=8.5) 
 plot_var(nc_file = out_file, var_name='temp')
 plot_var(nc_file = out_file, var_name='salt')
 dev.off()
 
 
-plot_var_compare(nc_file = out_file, field_file = 'field_mendota.csv', var_name = 'temp')
+#plot_var_compare(nc_file = out_file, field_file = 'field_mendota.csv', var_name = 'temp')
 
 temp_rmse = compare_to_field(out_file, field_file = 'field_mendota.csv', metric='water.temperature', as_value=F)
 print(paste(round(temp_rmse,2),'deg C RMSE'))
@@ -51,9 +51,13 @@ sim_vars(out_file)
 
 colnames(output_data) <- c('datetime',
                            paste0('wtr_',seq(0,24,1)))
+
+colnames(output_data_salt) <- c('datetime',
+                           paste0('salt_',seq(0,24,1)))
+
 head(output_data)
 
-wtr.heat.map(output_data)
+#wtr.heat.map(output_data)
 
 bath_data <- load.bathy('hypso.txt')
 head(bath_data)
@@ -61,9 +65,13 @@ head(bath_data)
 schmidt <-ts.schmidt.stability(output_data,bath_data)
 buoyancy <- ts.buoyancy.freq(output_data, at.thermo = TRUE, na.rm = TRUE)
 thermo <- ts.thermo.depth(output_data, Smin = 0.1, na.rm = FALSE)
-get_var(output.nc)
 
 ME.df <- data.frame("Datetime"= output_data$datetime,"Schmidt" = schmidt$schmidt.stability, 
+                    "N2" = buoyancy$n2, 
+                    "Thermocline" = thermo$thermo.depth, 
+                    "Tempdiff" = output_data$wtr_1-output_data$wtr_24)
+
+ME.df.salt <- data.frame("Datetime"= output_data_salt$datetime,"Schmidt" = schmidt$schmidt.stability, 
                     "N2" = buoyancy$n2, 
                     "Thermocline" = thermo$thermo.depth, 
                     "Tempdiff" = output_data$wtr_1-output_data$wtr_24)
@@ -82,9 +90,9 @@ g3 <- ggplot(ME.df, aes(Datetime, Thermocline, col = 'Thermocline Depth [m]')) +
 g4 <- ggplot(ME.df, aes(Datetime, Tempdiff, col = 'Diff Epi-Hypo [deg C]')) +
   geom_line() +
   theme_bw()
-g5 <- ggplot(ME.df.salt)+
-  geom_line(aes(x=Datetime, y=output_data_salt$wtr_0,color="Surface (0m)"))+
-  geom_line(aes(x=Datetime, y=output_data_salt$wtr_24,color="Bottom (24m)"))+
+g5 <- ggplot(output_data_salt)+
+  geom_line(aes(x=datetime, y=output_data_salt$salt_0,color="Surface (0m)"))+
+  geom_line(aes(x=datetime, y=output_data_salt$salt_24,color="Bottom (24m)"))+
   scale_color_manual(values = c(
     'Surface (0m)' = 'red',
     'Bottom (24m)' = 'darkblue')) +
