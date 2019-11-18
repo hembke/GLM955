@@ -2,9 +2,9 @@ Salt scenarios :  Make increasing salt concentration
 We were able to run the model with inflow yay! 
 
 Let's get our data in order first!
-1) -double check residence time against inflows
--add temp data to mendota inflow
--use outflow file for mendota model as input for inflow of monona (should be in lake.csv or output.nc)
+1) double check residence time against inflows (Linnea)
+2)add temp data to mendota inflow (Hilary)
+3)use outflow file for mendota model as input for inflow of monona (should be in lake.csv or output.nc) (TBD)
 4) make sure chloride is translated to salinity (.61) in your own personal files. Our baseline values are 19.5mg/L for Mendota inflow, 12.2 mg/L for in-lake Mendota starting, 15.3 mg/L for in-lake Monona starting
 
 
@@ -13,13 +13,13 @@ Our scenarios:
 -- Increase the amount over the year then see how much it is per day ---
 
 
-1) Each each increase the salinity input by X percent
-2) Make the salt concentration go exponentially over time
-3) Making salt go up exponentially then decrease over time --> Remediation
-4) Think about the season and when the salt goes in.
-
-If we really have time:
-Sensitivity of the inflows --> how does that change the RMSE
+1) Each each increase the salinity input by X percent (10, 100, 1000%)
+  Increase across the board (Patricia)
+  Increase linearly (Adam wrote fn)
+  Increase exponentially (Adam writing fn)
+      If we have time) Remediate halfway through simulation
+      If we really have time)
+      Sensitivity of the inflows --> how does that change the RMSE
 
 What we need to learn how to do:
 - Export the contour plot data for temperature and salinity --> calculate the thermocline using rLakeAnalyzer
