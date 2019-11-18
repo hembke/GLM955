@@ -267,7 +267,7 @@
    strmbd_slope   = 3.0
    strmbd_drag    = 0.0160
    inflow_factor  = 1.0
-   inflow_fl      = 'Yahara_Windsor_ScaledDischarge.csv'
+   inflow_fl      = 'input1000.csv'
    inflow_varnum  = 2
    inflow_vars    = 'FLOW','SALT'
    coef_inf_entrain = 0.
