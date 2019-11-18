@@ -1,6 +1,14 @@
 Salt scenarios :  Make increasing salt concentration
 We were able to run the model with inflow yay! 
 
+Let's get our data in order first!
+1) -double check residence time against inflows
+-add temp data to mendota inflow
+-use outflow file for mendota model as input for inflow of monona (should be in lake.csv or output.nc)
+4) make sure chloride is translated to salinity (.61) in your own personal files. Our baseline values are 19.5mg/L for Mendota inflow, 12.2 mg/L for in-lake Mendota starting, 15.3 mg/L for in-lake Monona starting
+
+
+
 Our scenarios:
 -- Increase the amount over the year then see how much it is per day ---
 
