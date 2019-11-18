@@ -36,6 +36,9 @@ plot_var_compare(nc_file = out_file, field_file = 'field_mendota.csv', var_name 
 temp_rmse = compare_to_field(out_file, field_file = 'field_mendota.csv', metric='water.temperature', as_value=F)
 print(paste(round(temp_rmse,2),'deg C RMSE'))
 
+#Calculate NSE, change "as_value" to T
+temp_rmse<-compare_to_field(out_file, field_file= 'bcs/ME_observed.csv',metric= 'water.temperature', as_value= T, precision= 'hours')
+
 # 1.5 = very good fit - so 1.55 is good - this was achieved just with base value
 # base value: wind_factor=1.0, kw (Light extinction)= 0.22, Lw_factor=0.91
 
