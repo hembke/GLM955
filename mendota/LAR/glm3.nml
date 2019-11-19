@@ -137,8 +137,8 @@
 !-------------------------------------------------------------------------------
 &time
    timefmt = 2
-   start = '1980-01-01 00:00:00'
-   stop = '2016-01-01 23:00:00'
+   start = '1989-10-01 00:00:00'
+   stop = '2016-12-31 23:00:00'
    dt = 3600
    num_days= 730
    timezone = -6
@@ -262,12 +262,12 @@
 !-------------------------------------------------------------------------------
 &inflow
    num_inflows    = 1 
-   names_of_strms = 'Yahara_Windsor_Scaled'
+   names_of_strms = 'Yahara'
    strm_hf_angle  = 65.0
    strmbd_slope   = 3.0
    strmbd_drag    = 0.0160
    inflow_factor  = 1.0
-   inflow_fl      = 'input1000.csv'
+   inflow_fl      = 'Yahara.1.csv'
    inflow_varnum  = 2
    inflow_vars    = 'FLOW','SALT'
    coef_inf_entrain = 0.

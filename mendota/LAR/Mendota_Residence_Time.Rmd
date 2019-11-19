@@ -1,0 +1,55 @@
+---
+title: "Mendota Residence Time"
+output: html_document
+---
+```{r}
+library(lubridate)
+library(tidyr)
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+```
+
+```{r}
+#Residence time check for Mendota using Yahara discharge from Windsor USGS gage location with adjusted values accounting for other inflows from 1989-10-01 00:00:00 through 2016-12-31 23:00:00.
+
+discharge <- read_csv("Yahara.1.csv")
+volume <- 506880000  #in m^3 (value from LTER website)
+
+discharge1 <- discharge %>%
+  group_by(year = year(time)) %>%
+  summarise(total.flow = sum(FLOW))
+#discharge1 has total discharge/year in m^3 for 1989-2016 *Note that 1989 only starts at Oct. 10.
+
+discharge.compare <- discharge1 %>%
+  mutate(residencetime = volume/(total.flow*3600*24)) #Residence time is in years
+
+discharge.compare
+
+ggplot(discharge.compare) +
+  geom_bar(aes(year, residencetime), stat = "identity") #Note that 1989 only starts at Oct. 10.
+```
+
+```{r}
+#Making adjustments to hopefully fix residence time. In the previous plot, it looked like many years had ~2x the residence time, meaning we should have initially increased our discharge data by double what we did in the first instance (i.e. 4x). 
+
+Yahara2 <- read_csv("Yahara.1.csv") %>%
+  mutate(FLOW2 = FLOW*2) %>%
+  select(time, FLOW2, SALT, TEMP) %>%
+  rename(FLOW = FLOW2)
+
+write_csv(Yahara2, "C:/Users/linne/OneDrive/Documents/GLM955-South/mendota/LAR/Yahara2.csv")
+
+#Repeat previous steps with new data. 
+Yahara3 <- Yahara2 %>%
+  group_by(year = year(time)) %>%
+  summarise(total.flow = sum(FLOW))
+
+comparison <- Yahara3 %>%
+  mutate(residencetime = volume/(total.flow*3600*24))
+
+comparison
+
+ggplot(comparison) +
+  geom_bar(aes(year, residencetime), stat = "identity")
+```
