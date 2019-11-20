@@ -3,8 +3,8 @@ title: "LAR_MendotaGLM"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+```{r}
 library(lubridate)
 library(tidyr)
 library(dplyr)
@@ -19,17 +19,7 @@ library(grid)
 library(lattice)
 ```
 
-```{r}
-sal <- function(x) {x*1000}
 
-salinity1 <- read.csv("C:/Users/linne/OneDrive/Documents/GLM955-South/mendota/LAR/Yahara_Windsor_ScaledDischarge.csv") %>%
-  mutate(SALT1 = sal(SALT)) %>%
-  select(time, FLOW, SALT1) %>%
-  rename(SALT = SALT1) 
-write_csv(salinity1, "input1000.csv")
-
-
-```
 
 ```{r}
 getwd()
@@ -39,7 +29,7 @@ sim_folder = getwd()
 run_glm()
 
 out_file = file.path(sim_folder, 'outputs/output.nc')
-plot_var(nc_file = out_file, var_name='salt')
+plot_var(nc_file = out_file, var_name='temp')
 
 plot_var_compare(nc_file = out_file, field_file = 'field_mendota.csv', var_name = 'temp')
 
@@ -47,25 +37,12 @@ temp_rmse = compare_to_field(out_file, field_file = 'field_mendota.csv', metric=
 
 print(paste(round(temp_rmse,2),'deg C RMSE'))
 
-
+#wind @ 1.1, LW @ 1.012, KW @ 0.4857  RMSE = 2.12 deg C
 ```
-```{r}
-#Residence time check for Mendota using Yahara discharge from Windsor USGS gage location with adjusted values accounting for other inflows from 1989-10-01 00:00:00 through 2016-12-31 23:00:00.
 
-discharge <- read_csv("Yahara.1.csv")
-volume <- 506880000  #in m^3 (value from LTER website)
 
-discharge1 <- discharge %>%
-  group_by(year = year(time)) %>%
-  summarise(total.flow = sum(FLOW))
-#discharge1 has total discharge/year in m^3 for 1989-2016 *Note that 1989 only starts at Oct. 10.
 
-discharge.compare <- discharge1 %>%
-  mutate(residencetime = volume/(total.flow*3600*24)) #Residence time is in years
 
-ggplot(discharge.compare) +
-  geom_bar(aes(year, residencetime), stat = "identity")
-```
 
 
 ```{r}

@@ -138,7 +138,7 @@
 &time
    timefmt = 2
    start = '1989-10-01 00:00:00'
-   stop = '2016-12-31 23:00:00'
+   stop = '2015-12-30 23:00:00'
    dt = 3600
    num_days= 730
    timezone = -6
@@ -207,9 +207,9 @@
 
    subdaily   = .true. 
    meteo_fl   = 'Mendota_hourly_NLDAS2.csv'
-   wind_factor = 0.9
+   wind_factor = 1.1
    sw_factor = 0.91 
-   lw_factor = 0.91 
+   lw_factor = 1.012 
    !at_factor = 1 
    !rh_factor = 1 
    !rain_factor = 1
@@ -224,7 +224,7 @@
    light_extc = 1.0, 0.5, 2.0, 4.0
    energy_frac = 0.51, 0.45, 0.035, 0.005
    Benthic_Imin = 10
-   Kw = 0.24 
+   Kw = 0.4857 
 /
 
 !-------------------------------------------------------------------------------
@@ -267,9 +267,9 @@
    strmbd_slope   = 3.0
    strmbd_drag    = 0.0160
    inflow_factor  = 1.0
-   inflow_fl      = 'Yahara.1.csv'
+   inflow_fl      = 'Yahara2.csv'
    inflow_varnum  = 2
-   inflow_vars    = 'FLOW','SALT'
+   inflow_vars    = 'FLOW','SALT', 'TEMP'
    coef_inf_entrain = 0.
 /
 !-------------------------------------------------------------------------------
