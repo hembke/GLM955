@@ -12,14 +12,14 @@ library(ggplot2)
 library(glmtools)
 library(GLM3r)
 
-setwd("~/Documents/GLM955-South/mendota/PQT/")
+setwd("~/Documents/GLM955-South/mendota/FreshFiles-from-2019-11-20/")
 sim_folder = getwd()
 
 run_glm()
 
 out_file = file.path(sim_folder, 'outputs/output.nc')
 
-pdf("Simulations/2019-11-18-Salt-214mgl", width=11, height=8.5) 
+pdf("Simulations/Control", width=11, height=8.5) 
 plot_var(nc_file = out_file, var_name='temp')
 plot_var(nc_file = out_file, var_name='salt')
 dev.off()
@@ -97,7 +97,7 @@ g5 <- ggplot(output_data_salt)+
     'Surface (0m)' = 'red',
     'Bottom (24m)' = 'darkblue')) +
   labs(color = 'Depth')+
-  ylab("Salt concentrations g/kg")+
+  ylab("Salinity g/kg")+
   theme_bw()
 
 g5
@@ -109,3 +109,4 @@ library(lattice)
 
 library(ggpubr)
 g <- grid.arrange(g1, g2, g3, g4,g5, ncol =1)
+g
