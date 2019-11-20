@@ -13,19 +13,15 @@ library(tidyverse)
 library(lubridate)
 library(rLakeAnalyzer)
 
-setwd("~/Desktop/GLM955-South")
+setwd("~/Desktop/GLM955-South/mendota/FreshFiles-from-2019-11-20")
 sim_folder = getwd()
-
-windsor<-read_csv("Yahara_Windsor_ScaledDischarge_MJS.csv")
-windsor$SALT<-0.0001
-write_csv(windsor,"Yahara_Windsor_ScaledDischarge_MJS.csv")
-
+set.seed(123)
 run_glm()
 
 out_file = file.path(sim_folder, 'outputs/output.nc')
-plot_var(nc_file = out_file, var_name='temp')
 
-plot_var_compare(nc_file = out_file, field_file = 'field_mendota.csv', var_name = 'temp')
+#plot_var(nc_file = out_file, var_name='temp')
+#plot_var_compare(nc_file = out_file, field_file = 'field_mendota.csv', var_name = 'temp')
 
 temp_rmse = compare_to_field(out_file, field_file = 'field_mendota.csv', metric='water.temperature', as_value=F)
 print(paste(round(temp_rmse,2),'deg C RMSE'))
