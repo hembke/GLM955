@@ -27,7 +27,28 @@ temp_rmse = compare_to_field(out_file, field_file = 'field_mendota.csv', metric=
 print(paste(round(temp_rmse,2),'deg C RMSE'))
 
 #Calculate NSE, change "as_value" to T
-temp_rmse<-compare_to_field(out_file, field_file= 'bcs/ME_observed.csv',metric= 'water.temperature', as_value= T, precision= 'hours')
+temp_rmse<-compare_to_field(out_file, field_file= 'field_mendota.csv',metric= 'water.temperature', as_value= T, precision= 'hours')
+
+#Create function to calculate NSE
+nse<-function(rmse){
+
+i<-1
+os<-as.vector(NA)
+oo<-as.vector(NA)
+
+for(i in 1:length(rmse[,1]))
+  {
+  os[i]<-(rmse$mod[i] - rmse$obs[i])^2
+}
+  
+for(i in 1:length(rmse[,1]))
+  {
+  oo[i]<-(rmse$mod[i] - mean(rmse$obs))^2
+}
+
+nse = 1-(sum(os) / sum(oo))
+print(nse)
+}
 
 # 1.5 = very good fit - so 1.55 is good - this was achieved just with base value
 # base value: wind_factor=1.0, kw (Light extinction)= 0.22, Lw_factor=0.91
