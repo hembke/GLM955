@@ -36,7 +36,7 @@ sim_folder = getwd()
 run_glm()
 
 out_file = file.path(sim_folder, 'outputs/output.nc')
-plot_var(nc_file = out_file, var_name='temp')
+plot_var(nc_file = out_file, var_name='salt')
 
 plot_var_compare(nc_file = out_file, field_file = 'field_mendota.csv', var_name = 'temp')
 
@@ -57,6 +57,8 @@ sim_folder <- getwd()
 out_file <- file.path(sim_folder, 'outputs/output.nc')
 
 output_data <- get_var(file = out_file,var_name = 'temp', reference = 'surface',z_out = seq(0,24,1))
+
+output_data_salt <- get_var(file = out_file,var_name = 'salt', reference = 'surface',z_out = seq(0,24,1))
 
 colnames(output_data) <- c('datetime',
                         paste0('wtr_',seq(0,24,1)))
