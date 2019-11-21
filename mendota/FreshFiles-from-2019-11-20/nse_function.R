@@ -1,3 +1,5 @@
+#Below is code for creating the function nse() that takes the input from compare_to_field() when as_value = FALSE and calculates NSE
+
 nse<-function(rmse){
   
   i<-1
