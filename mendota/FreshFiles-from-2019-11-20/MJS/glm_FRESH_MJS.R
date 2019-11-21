@@ -50,6 +50,8 @@ nse = 1-(sum(os) / sum(oo))
 print(nse)
 }
 
+nse(temp_rmse)
+
 # 1.5 = very good fit - so 1.55 is good - this was achieved just with base value
 # base value: wind_factor=1.0, kw (Light extinction)= 0.22, Lw_factor=0.91
 
