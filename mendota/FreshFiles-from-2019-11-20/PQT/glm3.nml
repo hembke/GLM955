@@ -267,7 +267,7 @@
    strmbd_slope   = 3.0
    strmbd_drag    = 0.0160
    inflow_factor  = 1.0
-   inflow_fl      = 'Scenario_A2.csv'
+   inflow_fl      = 'Scenario_A3.csv'
    inflow_varnum  = 2
    inflow_vars    = 'FLOW','SALT', 'TEMP'
    coef_inf_entrain = 0.

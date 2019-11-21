@@ -21,16 +21,40 @@ run_glm()
 
 out_file = file.path(sim_folder, 'outputs/output.nc')
 
-pdf("Simulations/Scenario3_Mendota.PDF", width=11, height=8.5) 
-plot_var(nc_file = out_file, var_name='temp')
-plot_var(nc_file = out_file, var_name='salt')
-dev.off()
+#pdf("Simulations/Scenario3_Mendota.PDF", width=11, height=8.5) 
+#plot_var(nc_file = out_file, var_name='temp')
+#plot_var(nc_file = out_file, var_name='salt')
+#dev.off()
 
 
 #plot_var_compare(nc_file = out_file, field_file = 'field_mendota.csv', var_name = 'temp')
 
 temp_rmse = compare_to_field(out_file, field_file = 'field_mendota.csv', metric='water.temperature', as_value=F)
 print(paste(round(temp_rmse,3),'deg C RMSE'))
+
+rmse = compare_to_field(out_file, field_file = 'field_mendota.csv', metric='water.temperature', as_value=T)
+
+nse<-function(rmse){
+  
+  i<-1
+  os<-as.vector(NA)
+  oo<-as.vector(NA)
+  
+  for(i in 1:length(rmse[,1]))
+  {
+    os[i]<-(rmse$obs[i] - rmse$mod[i])^2
+  }
+  
+  for(i in 1:length(rmse[,1]))
+  {
+    oo[i]<-(rmse$obs[i] - mean(rmse$obs))^2
+  }
+  
+  nse = 1-(sum(os) / sum(oo))
+  print(nse)
+}
+
+nse(rmse)
 
 # I get 1.48 RMSE for the baseline
 
