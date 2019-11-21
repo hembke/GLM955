@@ -53,3 +53,23 @@ comparison
 ggplot(comparison) +
   geom_bar(aes(year, residencetime), stat = "identity")
 ```
+
+```{r}
+discharge <- read_csv("C:/Users/linne/OneDrive/Documents/GLM955-South/mendota/LAR/Y1.csv")
+volume <- 506880000  #in m^3 (value from LTER website)
+
+discharge1 <- discharge %>%
+  group_by(year = year(time)) %>%
+  summarise(total.flow = sum(FLOW))
+#discharge1 has total discharge/year in m^3 for 1989-2016 *Note that 1989 only starts at Oct. 10.
+
+discharge.compare <- discharge1 %>%
+  mutate(residencetime = volume/(total.flow*3600*24)) #Residence time is in years
+
+z <- mean(discharge.compare$residencetime)
+
+discharge.compare
+
+ggplot(discharge.compare) +
+  geom_bar(aes(year, residencetime), stat = "identity") #Note that 1989 only starts at Oct. 10.
+```

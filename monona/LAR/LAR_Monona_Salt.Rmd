@@ -13,12 +13,16 @@ library(ggplot2)
 library(devtools)
 library(glmtools)
 library(GLM3r)
+library(rLakeAnalyzer)
+library(gridExtra)
+library(grid)
+library(lattice)
 ```
 
 
 ```{r}
 getwd()
-setwd("C:/Users/linne/OneDrive/Documents/GLM955-South/monona/LAR_Salt")
+setwd("C:/Users/linne/OneDrive/Documents/GLM955-South/monona/LAR")
 sim_folder = getwd()
 
 run_glm()
@@ -29,7 +33,89 @@ plot_var(nc_file = out_file, var_name='salt')
 plot_var_compare(nc_file = out_file, field_file = 'field_Monona2.csv', var_name = 'temp')
 
 temp_rmse = compare_to_field(out_file, field_file = 'field_Monona2.csv', metric='water.temperature', as_value=F)
-print(paste(round(temp_rmse,2),'deg C RMSE')) #2.68 RMSE???
+
+print(paste(round(temp_rmse,2),'deg C RMSE')) #1.55 C
+
+temp_rmse<-compare_to_field(out_file, field_file= 'field_Monona2.csv',metric= 'water.temperature', as_value= T, precision= 'hours')
+
+nse<-function(rmse){
+
+i<-1
+os<-as.vector(NA)
+oo<-as.vector(NA)
+
+for(i in 1:length(rmse[,1]))
+  {
+  os[i]<-(rmse$obs[i] - rmse$mod[i])^2
+}
+  
+for(i in 1:length(rmse[,1]))
+  {
+  oo[i]<-(rmse$obs[i] - mean(rmse$obs))^2
+}
+
+nse = 1-(sum(os) / sum(oo))
+print(nse)
+}
+
+nse(temp_rmse) # 0.94 C
+```
 
 
+
+
+```{r}
+sim_folder <- getwd()
+out_file <- file.path(sim_folder, 'outputs/output.nc')
+
+output_data <- get_var(file = out_file,var_name = 'temp', reference = 'surface',z_out = seq(0,21,1))
+
+output_data_salt <- get_var(file = out_file,var_name = 'salt', reference = 'surface',z_out = seq(0,21,1))
+
+colnames(output_data) <- c('datetime',
+                        paste0('wtr_',seq(0,21,1)))
+
+colnames(output_data_salt) <- c('datetime',
+                           paste0('salt_',seq(0,21,1)))
+head(output_data)
+
+wtr.heat.map(output_data)
+
+bath_data <- load.bathy('hypso.txt')
+head(bath_data)
+
+
+schmidt <-ts.schmidt.stability(output_data,bath_data)
+buoyancy <- ts.buoyancy.freq(output_data, at.thermo = TRUE, na.rm = TRUE)
+thermo <- ts.thermo.depth(output_data, Smin = 0.1, na.rm = FALSE)
+
+MO.df <- data.frame("Datetime"= output_data$datetime,"Schmidt" = schmidt$schmidt.stability, 
+                         "N2" = buoyancy$n2, 
+                         "Thermocline" = thermo$thermo.depth, 
+                         "Tempdiff" = output_data$wtr_1-output_data$wtr_21)
+
+g1 <- ggplot(MO.df, aes(Datetime, Schmidt, col = 'Schmidt Stability [J/m2]')) +
+  geom_line() +
+  theme_bw()
+g2 <- ggplot(MO.df, aes(Datetime, N2, col = 'Buoyancy Frequency [s-2]')) +
+  geom_line() +
+  theme_bw()
+g3 <- ggplot(MO.df, aes(Datetime, Thermocline, col = 'Thermocline Depth [m]')) +
+  geom_line() +
+  theme_bw() +
+  scale_y_reverse()
+g4 <- ggplot(MO.df, aes(Datetime, Tempdiff, col = 'Diff Epi-Hypo [deg C]')) +
+  geom_line() +
+  theme_bw()
+g5 <- ggplot(output_data_salt)+
+  geom_line(aes(x=datetime, y=output_data_salt$salt_0,color="Surface (0m)"))+
+  geom_line(aes(x=datetime, y=output_data_salt$salt_21,color="Bottom (21m)"))+
+  scale_color_manual(values = c(
+    'Surface (0m)' = 'red',
+    'Bottom (21m)' = 'darkblue')) +
+  labs(color = 'Depth')+
+  ylab("Salt concentrations g/kg")+
+  theme_bw()
+
+g <- grid.arrange(g1, g2, g3, g4, g5, ncol = 1);g
 ```
