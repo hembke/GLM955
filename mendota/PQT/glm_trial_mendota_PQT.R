@@ -15,6 +15,8 @@ library(GLM3r)
 setwd("~/Documents/GLM955-South/mendota/FreshFiles-from-2019-11-20/")
 sim_folder = getwd()
 
+set.seed(123)
+
 run_glm()
 
 out_file = file.path(sim_folder, 'outputs/output.nc')
@@ -28,7 +30,7 @@ dev.off()
 #plot_var_compare(nc_file = out_file, field_file = 'field_mendota.csv', var_name = 'temp')
 
 temp_rmse = compare_to_field(out_file, field_file = 'field_mendota.csv', metric='water.temperature', as_value=F)
-print(paste(round(temp_rmse,2),'deg C RMSE'))
+print(paste(round(temp_rmse,3),'deg C RMSE'))
 
 # I get 1.48 RMSE for the baseline
 
@@ -77,36 +79,40 @@ ME.df.salt <- data.frame("Datetime"= output_data_salt$datetime,"Schmidt" = schmi
                     "Tempdiff" = output_data$wtr_1-output_data$wtr_24)
 
 # Plot Physical features:
-g1 <- ggplot(ME.df, aes(Datetime, Schmidt, col = 'Schmidt Stability [J/m2]')) +
+library(ggplot2)
+g1 <- ggplot(ME.df, aes(Datetime, Schmidt),colour = "black") +
   geom_line() +
+  ggtitle('Schmidt Stability [J/m2]')+
   theme_bw()
-g2 <- ggplot(ME.df, aes(Datetime, N2, col = 'Buoyancy Frequency [s-2]')) +
+g2 <- ggplot(ME.df, aes(Datetime, N2),colour = 'black') +
   geom_line() +
+  ggtitle('Buoyancy Frequency [s-2]')+
   theme_bw()
-g3 <- ggplot(ME.df, aes(Datetime, Thermocline, col = 'Thermocline Depth [m]')) +
+g3 <- ggplot(ME.df, aes(Datetime, Thermocline), colour= "black") +
   geom_line() +
+  ggtitle('Thermocline Depth [m]')+
   theme_bw() +
   scale_y_reverse()
-g4 <- ggplot(ME.df, aes(Datetime, Tempdiff, col = 'Diff Epi-Hypo [deg C]')) +
+g4 <- ggplot(ME.df, aes(Datetime, Tempdiff), colour = "black") +
   geom_line() +
+  ggtitle("Diff Epi-Hypo [deg C]")+
   theme_bw()
 g5 <- ggplot(output_data_salt)+
   geom_line(aes(x=datetime, y=output_data_salt$salt_0,color="Surface (0m)"))+
   geom_line(aes(x=datetime, y=output_data_salt$salt_24,color="Bottom (24m)"))+
   scale_color_manual(values = c(
     'Surface (0m)' = 'red',
-    'Bottom (24m)' = 'darkblue')) +
+    'Bottom (24m)' = 'blue')) +
   labs(color = 'Depth')+
   ylab("Salinity g/kg")+
-  theme_bw()
+  theme_bw()+
+  theme(legend.position="bottom")
 
 g5
-
 library(gridExtra)
 library(grid)
 library(ggplot2)
 library(lattice)
 
 library(ggpubr)
-g <- grid.arrange(g1, g2, g3, g4,g5, ncol =1)
-g
+g <- grid.arrange(g1, g2, g3, g4,g5, ncol =1, top=textGrob("Control Scenario: Mendota, Constant salt [0]"))
