@@ -40,6 +40,7 @@ write_csv(MO_A4, "MO_A4.csv")
 ```
 
 ```{r}
+setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 getwd()
 setwd("C:/Users/linne/OneDrive/Documents/GLM955-South/monona/LAR")
 sim_folder = getwd()
@@ -108,33 +109,54 @@ schmidt <-ts.schmidt.stability(output_data,bath_data)
 buoyancy <- ts.buoyancy.freq(output_data, at.thermo = TRUE, na.rm = TRUE)
 thermo <- ts.thermo.depth(output_data, Smin = 0.1, na.rm = FALSE)
 
-MO.df <- data.frame("Datetime"= output_data$datetime,"Schmidt" = schmidt$schmidt.stability, 
+MO.df <- data.frame("Datetime"= output_data$datetime,"Schmidt" = schmidt$schmidt.stability,
                          "N2" = buoyancy$n2, 
                          "Thermocline" = thermo$thermo.depth, 
                          "Tempdiff" = output_data$wtr_1-output_data$wtr_21)
 
-g1 <- ggplot(MO.df, aes(Datetime, Schmidt, col = 'Schmidt Stability [J/m2]')) +
+
+g1 <- ggplot(MO.df, aes(Datetime, Schmidt),colour = "black") +
   geom_line() +
+  ggtitle('Schmidt Stability [J/m2]')+
   theme_bw()
-g2 <- ggplot(MO.df, aes(Datetime, N2, col = 'Buoyancy Frequency [s-2]')) +
+g2 <- ggplot(MO.df, aes(Datetime, N2),colour = 'black') +
   geom_line() +
+  ggtitle('Buoyancy Frequency [s-2]')+
   theme_bw()
-g3 <- ggplot(MO.df, aes(Datetime, Thermocline, col = 'Thermocline Depth [m]')) +
+g3 <- ggplot(MO.df, aes(Datetime, Thermocline), colour= "black") +
   geom_line() +
+  ggtitle('Thermocline Depth [m]')+
   theme_bw() +
   scale_y_reverse()
-g4 <- ggplot(MO.df, aes(Datetime, Tempdiff, col = 'Diff Epi-Hypo [deg C]')) +
+g4 <- ggplot(MO.df, aes(Datetime, Tempdiff), colour = "black") +
   geom_line() +
+  ggtitle("Diff Epi-Hypo [deg C]")+
   theme_bw()
 g5 <- ggplot(output_data_salt)+
   geom_line(aes(x=datetime, y=output_data_salt$salt_0,color="Surface (0m)"))+
   geom_line(aes(x=datetime, y=output_data_salt$salt_21,color="Bottom (21m)"))+
   scale_color_manual(values = c(
     'Surface (0m)' = 'red',
-    'Bottom (21m)' = 'darkblue')) +
+    'Bottom (24m)' = 'blue')) +
   labs(color = 'Depth')+
-  ylab("Salt concentrations g/kg")+
-  theme_bw()
+  ylab("Salinity [g/kg]")+
+  theme_bw()+
+  theme(legend.position="bottom")
+g6 <- ggplot(output_data)+
+  geom_line(aes(x=datetime, y=output_data$wtr_0,color="Surface (0m)"))+
+  geom_line(aes(x=datetime, y=output_data$wtr_21,color="Bottom (21m)"))+
+  scale_color_manual(values = c(
+    'Surface (0m)' = 'red',
+    'Bottom (21m)' = 'blue')) +
+  labs(color = 'Depth')+
+  ylab("Temperature [C]")+
+  theme_bw()+
+  theme(legend.position="bottom")
+library(ggpubr)
+library(egg)
 
-g <- grid.arrange(g1, g2, g3, g4, g5, ncol = 1);g
+g <- egg::ggarrange(g1, g2, g3, g4,g5, ncol=1)
+g
+g.compare <- egg::ggarrange(g5, g6, ncol=1)
+g.compare
 ```
