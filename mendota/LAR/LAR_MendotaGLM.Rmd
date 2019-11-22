@@ -25,6 +25,10 @@ Y1$SALT <- 0.0
 
 write_csv(Y1, "Y1.csv")
 
+Yahara_1000 <- read_csv("Y1.csv")
+Yahara_1000$SALT <- 1000
+write_csv(Yahara_1000, "Yahara_1000_test.csv")
+
 ```
 
 

@@ -16,6 +16,8 @@ library(rLakeAnalyzer)
 setwd("~/Desktop/GLM955-South/mendota/FreshFiles-from-2019-11-20")
 sim_folder = getwd()
 set.seed(123)
+
+
 run_glm()
 
 out_file = file.path(sim_folder, 'outputs/output.nc')
@@ -59,3 +61,98 @@ nse(temp_rmse)
 # change values: kw =0.24 -- RMSE = 1.45
 # change values: kw = 0.20, RMSE = 1.67
 # change values: wind_factor = 0.9, kw = 0.24 -- RMSE = 1.37
+
+
+# RLAKEANALYZER
+sim_folder <- getwd()
+out_file <- file.path(sim_folder, 'outputs/output.nc')
+
+output_data <- get_var(file = out_file,var_name = 'temp', reference = 'surface',z_out = seq(0,24,1))
+output_data_salt <- get_var(file = out_file,var_name = 'salt', reference = 'surface',z_out = seq(0,24,1))
+
+sim_vars(out_file)
+
+colnames(output_data) <- c('datetime',
+                           paste0('wtr_',seq(0,24,1)))
+
+colnames(output_data_salt) <- c('datetime',
+                                paste0('salt_',seq(0,24,1)))
+
+head(output_data)
+
+#wtr.heat.map(output_data)
+
+bath_data <- load.bathy('hypso.txt')
+head(bath_data)
+
+schmidt <-ts.schmidt.stability(output_data,bath_data)
+buoyancy <- ts.buoyancy.freq(output_data, at.thermo = TRUE, na.rm = TRUE)
+thermo <- ts.thermo.depth(output_data, Smin = 0.1, na.rm = FALSE)
+
+ME.df <- data.frame("Datetime"= output_data$datetime,"Schmidt" = schmidt$schmidt.stability, 
+                    "N2" = buoyancy$n2, 
+                    "Thermocline" = thermo$thermo.depth, 
+                    "Tempdiff" = output_data$wtr_1-output_data$wtr_24)
+
+ME.df.salt <- data.frame("Datetime"= output_data_salt$datetime,"Schmidt" = schmidt$schmidt.stability, 
+                         "N2" = buoyancy$n2, 
+                         "Thermocline" = thermo$thermo.depth, 
+                         "Tempdiff" = output_data$wtr_1-output_data$wtr_24)
+
+# Plot Physical features:
+library(ggplot2)
+g1 <- ggplot(ME.df, aes(Datetime, Schmidt),colour = "black") +
+  geom_line() +
+  ggtitle('Schmidt Stability [J/m2]')+
+  theme_bw()
+g2 <- ggplot(ME.df, aes(Datetime, N2),colour = 'black') +
+  geom_line() +
+  ggtitle('Buoyancy Frequency [s-2]')+
+  theme_bw()
+g3 <- ggplot(ME.df, aes(Datetime, Thermocline), colour= "black") +
+  geom_line() +
+  ggtitle('Thermocline Depth [m]')+
+  theme_bw() +
+  scale_y_reverse()
+g4 <- ggplot(ME.df, aes(Datetime, Tempdiff), colour = "black") +
+  geom_line() +
+  ggtitle("Diff Epi-Hypo [deg C]")+
+  theme_bw()
+g5 <- ggplot(output_data_salt)+
+  geom_line(aes(x=datetime, y=output_data_salt$salt_0,color="Surface (0m)"))+
+  geom_line(aes(x=datetime, y=output_data_salt$salt_24,color="Bottom (24m)"))+
+  scale_color_manual(values = c(
+    'Surface (0m)' = 'red',
+    'Bottom (24m)' = 'blue')) +
+  labs(color = 'Depth')+
+  ylab("Salinity g/kg")+
+  theme_bw()+
+  theme(legend.position="bottom")
+
+g5
+library(gridExtra)
+library(grid)
+library(ggplot2)
+library(lattice)
+
+library(ggpubr)
+g <- grid.arrange(g1, g2, g3, g4,g5, ncol =1, top=textGrob("Lake Mendota, Scenario A3, Constant salt [10]"))
+
+
+##pull out schmidt stability and onset of stratification
+
+schmidt$md<-strftime(schmidt$datetime,"%m%d")
+schmidt0715<-filter(schmidt,md=="0715")
+plot(schmidt0715$datetime,schmidt0715$schmidt.stability,type="l",ylab = "Schmidt Stability", xlab = "Date")
+
+thermo <- ts.thermo.depth(output_data, Smin = 0.1, na.rm = FALSE)
+thermo$y<-strftime(thermo$datetime,"%Y")
+thermo$md<-strftime(thermo$datetime,"%m%d")
+thermo$md<-as.Date(thermo$md,"%m%d")
+thermo<-filter(thermo,thermo$md>as.Date("2019-04-01"))
+thermo<-filter(thermo,thermo$thermo.depth!='NaN')
+thermo<-filter(thermo,thermo$thermo.depth>15)
+thermo$md<-strftime(thermo$md,"%m%d")
+thermo_g<-group_by(thermo,y)
+s<-as.data.frame(summarize(thermo_g,first(md)))
+
