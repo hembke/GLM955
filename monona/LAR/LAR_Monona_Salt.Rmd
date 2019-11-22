@@ -19,6 +19,25 @@ library(grid)
 library(lattice)
 ```
 
+```{r}
+MO_A1 <- read_csv("MO_Yahara_flow.csv")
+MO_A1$SALT <- 0.1
+write_csv(MO_A1, "MO_A1.csv")
+
+MO_A2 <- read_csv("MO_Yahara_flow.csv")
+MO_A2$SALT <- 1 
+write_csv(MO_A2, "MO_A2.csv")
+
+MO_A3 <- read_csv("MO_Yahara_flow.csv")
+MO_A3$SALT <- 10
+write_csv(MO_A3, "MO_A3.csv")
+
+MO_A4 <- read_csv("MO_Yahara_flow.csv")
+MO_A4$SALT <- 35
+write_csv(MO_A4, "MO_A4.csv")
+
+
+```
 
 ```{r}
 getwd()
