@@ -138,3 +138,21 @@ library(lattice)
 library(ggpubr)
 g <- grid.arrange(g1, g2, g3, g4,g5, ncol =1, top=textGrob("Lake Mendota, Scenario A3, Constant salt [10]"))
 
+
+##pull out schmidt stability and onset of stratification
+
+schmidt$md<-strftime(schmidt$datetime,"%m%d")
+schmidt0715<-filter(schmidt,md=="0715")
+plot(schmidt0715$datetime,schmidt0715$schmidt.stability,type="l",ylab = "Schmidt Stability", xlab = "Date")
+
+thermo <- ts.thermo.depth(output_data, Smin = 0.1, na.rm = FALSE)
+thermo$y<-strftime(thermo$datetime,"%Y")
+thermo$md<-strftime(thermo$datetime,"%m%d")
+thermo$md<-as.Date(thermo$md,"%m%d")
+thermo<-filter(thermo,thermo$md>as.Date("2019-04-01"))
+thermo<-filter(thermo,thermo$thermo.depth!='NaN')
+thermo<-filter(thermo,thermo$thermo.depth>15)
+thermo$md<-strftime(thermo$md,"%m%d")
+thermo_g<-group_by(thermo,y)
+s<-as.data.frame(summarize(thermo_g,first(md)))
+
