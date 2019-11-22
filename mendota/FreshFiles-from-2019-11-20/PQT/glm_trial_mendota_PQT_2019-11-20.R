@@ -21,10 +21,10 @@ run_glm()
 
 out_file = file.path(sim_folder, 'outputs/output.nc')
 
-#pdf("Simulations/Scenario3_Mendota.PDF", width=11, height=8.5) 
-#plot_var(nc_file = out_file, var_name='temp')
-#plot_var(nc_file = out_file, var_name='salt')
-#dev.off()
+pdf("Simulations/A4_Mendota.PDF", width=11, height=8.5) 
+plot_var(nc_file = out_file, var_name='temp')
+plot_var(nc_file = out_file, var_name='salt')
+dev.off()
 
 
 #plot_var_compare(nc_file = out_file, field_file = 'field_mendota.csv', var_name = 'temp')
@@ -132,11 +132,35 @@ g5 <- ggplot(output_data_salt)+
   theme_bw()+
   theme(legend.position="bottom")
 
-g5
+g6 <- ggplot(output_data)+
+  geom_line(aes(x=datetime, y=output_data$wtr_0,color="Surface (0m)"))+
+  geom_line(aes(x=datetime, y=output_data_salt$salt_24,color="Bottom (24m)"))+
+  scale_color_manual(values = c(
+    'Surface (0m)' = 'red',
+    'Bottom (24m)' = 'blue')) +
+  labs(color = 'Depth')+
+  ylab("Temperature (C)")+
+  theme_bw()+
+  theme(legend.position="bottom")
+
 library(gridExtra)
 library(grid)
 library(ggplot2)
 library(lattice)
 
 library(ggpubr)
-g <- grid.arrange(g1, g2, g3, g4,g5, ncol =1, top=textGrob("Lake Mendota, Scenario A3, Constant salt [10]"))
+#g <- grid.arrange(g1, g2, g3, g4,g5, ncol =1, top=textGrob("Lake Mendota, Scenario A3, Constant salt [10]"))
+
+#plot.compare <- grid.arrange(g5, g6, ncol=1)
+
+#install.packages("egg")
+library(egg)
+g <- egg::ggarrange(g1, g2, g3, g4,g5, ncol=1)
+g
+g.compare <- egg::ggarrange(g5, g6, ncol=1)
+g.compare
+
+pdf("Simulations/A4_Mendota_compare.PDF", width=11, height=8.5) 
+g
+g.compare
+dev.off()
