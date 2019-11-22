@@ -17,7 +17,7 @@ rm(list = ls())
 
 setwd("C:/Users/linne/OneDrive/Documents/GLM955-South/monona/LAR")
 
-discharge <- read_csv("MO_Yahara.csv")
+discharge <- read_csv("MO_Yahara_flow.csv")
 discharge$FLOW <- discharge$FLOW/(3600*24)
 
 write_csv(discharge, "MO_Yahara_flow.csv")
@@ -33,14 +33,20 @@ discharge.compare <- discharge1 %>%
   mutate(residencetime = volume/(total.flow*3600*24)) #Residence time is in years 
 
 z <- mean(discharge.compare$residencetime) #1.46
+y<- sum(discharge.compare$residencetime) - 11.5892462
+
+y/26
 
 ggplot(discharge.compare) +
   geom_bar(aes(year, residencetime), stat = "identity") #Note that 1989 only starts at Oct. 10.
 ```
 
 ```{r}
-discharge2 <- read_csv("MO_Yahara_flow.csv") 
-discharge2$FLOW <- discharge$FLOW*1.5
+discharge2 <- read_csv("MO_Yahara_flow.csv") %>%
+  mutate(f = FLOW*2) %>%
+  select(time, f, SALT, TEMP) %>%
+  rename(FLOW = f)
+
 
 discharge2 <- discharge2 %>%
   group_by(year = year(time)) %>%
@@ -50,4 +56,10 @@ compare <- discharge2 %>%
   mutate(residencetime = volume/(total.flow*3600*24))
 
 zz <- mean(compare$residencetime)
+x<- sum(compare$residencetime) - 26.337684
+
+x/26
+
+ggplot(discharge.compare) +
+  geom_bar(aes(year, residencetime), stat = "identity")
 ```
