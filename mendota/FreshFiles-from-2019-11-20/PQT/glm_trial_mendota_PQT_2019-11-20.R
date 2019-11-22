@@ -21,16 +21,18 @@ run_glm()
 
 out_file = file.path(sim_folder, 'outputs/output.nc')
 
-pdf("Simulations/A4_Mendota.PDF", width=11, height=8.5) 
+png("Simulations/Scenario_B4_Mendota_temp.png", width = 1024, height = 768)
 plot_var(nc_file = out_file, var_name='temp')
-plot_var(nc_file = out_file, var_name='salt')
 dev.off()
 
+png("Simulations/Scenario_B4_Mendota_salt.png", width = 1024, height = 768)
+plot_var(nc_file = out_file, var_name='salt')
+dev.off()
 
 #plot_var_compare(nc_file = out_file, field_file = 'field_mendota.csv', var_name = 'temp')
 
 temp_rmse = compare_to_field(out_file, field_file = 'field_mendota.csv', metric='water.temperature', as_value=F)
-print(paste(round(temp_rmse,3),'deg C RMSE'))
+print(paste(round(temp_rmse,2),'deg C RMSE'))
 
 rmse = compare_to_field(out_file, field_file = 'field_mendota.csv', metric='water.temperature', as_value=T)
 
@@ -134,7 +136,7 @@ g5 <- ggplot(output_data_salt)+
 
 g6 <- ggplot(output_data)+
   geom_line(aes(x=datetime, y=output_data$wtr_0,color="Surface (0m)"))+
-  geom_line(aes(x=datetime, y=output_data_salt$salt_24,color="Bottom (24m)"))+
+  geom_line(aes(x=datetime, y=output_data$wtr_24,color="Bottom (24m)"))+
   scale_color_manual(values = c(
     'Surface (0m)' = 'red',
     'Bottom (24m)' = 'blue')) +
@@ -156,11 +158,16 @@ library(ggpubr)
 #install.packages("egg")
 library(egg)
 g <- egg::ggarrange(g1, g2, g3, g4,g5, ncol=1)
-g
 g.compare <- egg::ggarrange(g5, g6, ncol=1)
-g.compare
 
-pdf("Simulations/A4_Mendota_compare.PDF", width=11, height=8.5) 
+
+png("Simulations/Scenario_B4_Mendota_compare_physical.png", width = 1024, height = 768)
 g
+dev.off()
+
+png("Simulations/Scenario_B4_Mendota_compare_salt_temp.png", width = 1024, height = 768)
 g.compare
 dev.off()
+
+print(paste(round(temp_rmse,2),'deg C RMSE'))
+nse(rmse)
