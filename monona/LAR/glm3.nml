@@ -89,7 +89,7 @@
    strmbd_slope = 3
    strmbd_drag = 0.016
    inflow_factor = 1
-   inflow_fl = 'MO_A1.csv'
+   inflow_fl = 'MO_B4.csv'
    inflow_varnum = 3
    inflow_vars = 'FLOW','SALT','TEMP'
    coef_inf_entrain = 0

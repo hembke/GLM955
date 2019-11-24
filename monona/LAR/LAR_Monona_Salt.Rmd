@@ -5,6 +5,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+rm(list = ls())
 library(lubridate)
 library(tidyr)
 library(dplyr)
@@ -54,7 +55,7 @@ plot_var_compare(nc_file = out_file, field_file = 'field_Monona2.csv', var_name 
 
 temp_rmse = compare_to_field(out_file, field_file = 'field_Monona2.csv', metric='water.temperature', as_value=F)
 
-print(paste(round(temp_rmse,2),'deg C RMSE')) #1.55 C
+print(paste(round(temp_rmse,2),'deg C RMSE')) 
 
 temp_rmse<-compare_to_field(out_file, field_file= 'field_Monona2.csv',metric= 'water.temperature', as_value= T, precision= 'hours')
 
@@ -78,7 +79,7 @@ nse = 1-(sum(os) / sum(oo))
 print(nse)
 }
 
-nse(temp_rmse) # 0.94 C
+nse(temp_rmse)
 ```
 
 
@@ -88,21 +89,22 @@ nse(temp_rmse) # 0.94 C
 sim_folder <- getwd()
 out_file <- file.path(sim_folder, 'outputs/output.nc')
 
-output_data <- get_var(file = out_file,var_name = 'temp', reference = 'surface',z_out = seq(0,21,1))
+output_data <- get_var(file = out_file,var_name = 'temp', reference = 'surface',z_out = seq(0,20,1))
 
-output_data_salt <- get_var(file = out_file,var_name = 'salt', reference = 'surface',z_out = seq(0,21,1))
+output_data_salt <- get_var(file = out_file,var_name = 'salt', reference = 'surface',z_out = seq(0,20,1))
 
 colnames(output_data) <- c('datetime',
-                        paste0('wtr_',seq(0,21,1)))
+                        paste0('wtr_',seq(0,20,1)))
 
 colnames(output_data_salt) <- c('datetime',
-                           paste0('salt_',seq(0,21,1)))
+                           paste0('salt_',seq(0,20,1)))
 head(output_data)
 
 wtr.heat.map(output_data)
 
 bath_data <- load.bathy('hypso.txt')
 head(bath_data)
+
 
 
 schmidt <-ts.schmidt.stability(output_data,bath_data)
@@ -112,7 +114,7 @@ thermo <- ts.thermo.depth(output_data, Smin = 0.1, na.rm = FALSE)
 MO.df <- data.frame("Datetime"= output_data$datetime,"Schmidt" = schmidt$schmidt.stability,
                          "N2" = buoyancy$n2, 
                          "Thermocline" = thermo$thermo.depth, 
-                         "Tempdiff" = output_data$wtr_1-output_data$wtr_21)
+                         "Tempdiff" = output_data$wtr_1-output_data$wtr_20)
 
 
 g1 <- ggplot(MO.df, aes(Datetime, Schmidt),colour = "black") +
@@ -134,20 +136,20 @@ g4 <- ggplot(MO.df, aes(Datetime, Tempdiff), colour = "black") +
   theme_bw()
 g5 <- ggplot(output_data_salt)+
   geom_line(aes(x=datetime, y=output_data_salt$salt_0,color="Surface (0m)"))+
-  geom_line(aes(x=datetime, y=output_data_salt$salt_21,color="Bottom (21m)"))+
+  geom_line(aes(x=datetime, y=output_data_salt$salt_20,color="Bottom (20m)"))+
   scale_color_manual(values = c(
     'Surface (0m)' = 'red',
-    'Bottom (24m)' = 'blue')) +
+    'Bottom (20m)' = 'blue')) +
   labs(color = 'Depth')+
   ylab("Salinity [g/kg]")+
   theme_bw()+
   theme(legend.position="bottom")
 g6 <- ggplot(output_data)+
   geom_line(aes(x=datetime, y=output_data$wtr_0,color="Surface (0m)"))+
-  geom_line(aes(x=datetime, y=output_data$wtr_21,color="Bottom (21m)"))+
+  geom_line(aes(x=datetime, y=output_data$wtr_20,color="Bottom (20m)"))+
   scale_color_manual(values = c(
     'Surface (0m)' = 'red',
-    'Bottom (21m)' = 'blue')) +
+    'Bottom (20m)' = 'blue')) +
   labs(color = 'Depth')+
   ylab("Temperature [C]")+
   theme_bw()+
@@ -155,8 +157,7 @@ g6 <- ggplot(output_data)+
 library(ggpubr)
 library(egg)
 
-g <- egg::ggarrange(g1, g2, g3, g4,g5, ncol=1)
-g
+g <- egg::ggarrange(g1, g2, g3, g4, ncol=1)
 g.compare <- egg::ggarrange(g5, g6, ncol=1)
-g.compare
+
 ```
